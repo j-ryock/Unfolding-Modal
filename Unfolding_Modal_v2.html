@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unfolding Modal</title>
+  <style>
+    .modal-active {
+      overflow: hidden;
+    }
+
+    #modal-container {
+      position: fixed;
+      display: table;
+      height: 100%;
+      width: 100%;
+      top: 0;
+      left: 0;
+      transform: scale(0);
+      z-index: 1;
+    }
+
+    #modal-container .modal-background {
+      display: table-cell;
+      background: rgba(0, 0, 0, 0.8);
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    #modal-container .modal-background .modal {
+      background: white;
+      padding: 50px;
+      display: inline-block;
+      border-radius: 3px;
+      font-weight: 300;
+      position: relative;
+    }
+
+    #modal-container .modal-background .modal .modal-svg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      border-radius: 3px;
+    }
+
+    #modal-container .modal-background .modal .modal-svg rect {
+      stroke: #fff;
+      stroke-width: 2px;
+      stroke-dasharray: 778;
+      stroke-dashoffset: 778;
+    }
+
+    #modal-container.one {
+      transform: scaleY(0.01) scaleX(0);
+      animation: unfoldIn 1s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+    }
+
+    #modal-container.one.out {
+      transform: scale(1);
+      animation: unfoldOut 1s 0.3s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+    }
+
+    @keyframes unfoldIn {
+      0% {
+        transform: scaleY(0.005) scaleX(0);
+      }
+
+      50% {
+        transform: scaleY(0.005) scaleX(1);
+      }
+
+      100% {
+        transform: scaleY(1) scaleX(1);
+      }
+    }
+
+    @keyframes unfoldOut {
+      0% {
+        transform: scaleY(1) scaleX(1);
+      }
+
+      50% {
+        transform: scaleY(0.005) scaleX(1);
+      }
+
+      100% {
+        transform: scaleY(0.005) scaleX(0);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="modal-container">
+    <div class="modal-background">
+      <div class="modal">
+        <h2>I'm a Modal</h2>
+        <p>Hear me roar.</p>
+        <svg class="modal-svg" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="none">
+          <rect x="0" y="0" fill="none" width="226" height="162" rx="3" ry="3"></rect>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <button id="one" class="btn">Unfolding</button>
+
+  <script>
+    const button = document.querySelector(".btn");
+    const modal = document.getElementById("modal-container");
+    const body = document.body;
+
+    button.addEventListener("click", function (event) {
+      let { id } = event.target;
+      modal.className = "";
+      modal.classList.add(id);
+      body.classList.add("modal-active");
+    });
+
+    modal.addEventListener("click", function () {
+      this.classList.add("out");
+      body.classList.remove("modal-active");
+    });
+  </script>
+</body>
+
+</html>
